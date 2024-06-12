@@ -3,15 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.gayu.Gayathri.pp1_Machine">
+      <class name="com.gayu.Gayathri.AutoRegistration">
         <methods>
+          <include name="vlaidate"/>
+          <include name="tearDown"/>
           <include name="setup"/>
-          <include name="afterTest"/>
-          <include name="userName"/>
-          <include name="Info"/>
-          <include name="Action"/>
         </methods>
-      </class> <!-- com.gayu.Gayathri.pp1_Machine -->
+      </class> <!-- com.gayu.Gayathri.AutoRegistration -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
