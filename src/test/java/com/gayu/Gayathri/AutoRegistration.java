@@ -37,8 +37,7 @@ public class AutoRegistration {
 		System.out.println("--------------------------*****************-----------------------");
 		System.out.println("The server is Opened sucessfully");
 		WebDriverWait wait = new WebDriverWait(driver, 50);
-		WebElement viewerSectionLink = wait
-				.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'ng-tns-c93-3')]")));
+		WebElement viewerSectionLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/viewer/assets/images/colorsvg/gallery.svg']")));
 		viewerSectionLink.click();
 		System.out.println("--------------------------*****************-----------------------");
 		System.out.println("The Viewer Icon is clicked");
@@ -85,8 +84,6 @@ public class AutoRegistration {
 		driver.switchTo().window(parentWindow);
 		Thread.sleep(5000);
 	}
-	
-
 	@Test(priority = 2)
 	public void table() throws InterruptedException {
 		String parentWindow = driver.getWindowHandle();
@@ -121,20 +118,18 @@ public class AutoRegistration {
 			}
 		}
 	}
-	
 	@Test(priority = 3)
 	public void contributor() throws InterruptedException {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 50);
-			Actions actions = new Actions(driver);
-			actions.keyDown(Keys.SHIFT).sendKeys("m").keyUp(Keys.SHIFT).build().perform();
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			WebElement gt = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/viewer/assets/images/colorsvg/oldmenu.svg']")));
+			gt.click();
+			Thread.sleep(3000);
 			System.out.println("--------------------------*****************-----------------------");
-			System.out.println("Action executed successfully!");
-
-		} catch (NoSuchElementException e) {
-			System.out.println("Element not found: " + e.getMessage());
+			System.out.println("Edit Menu selected Successfully");
 		} catch (Exception e) {
-			System.out.println("Error executing action: " + e.getMessage());
+			System.out.println("--------------------------*****************-----------------------");
+			System.out.println("Edit Menu  is not selected");
 		}
 		try {
 			WebDriverWait wait6 = new WebDriverWait(driver, 30);
@@ -170,6 +165,20 @@ public class AutoRegistration {
 			System.out.println("Element not found: " + e.getMessage());
 		} catch (Exception e) {
 			System.out.println("Error executing action: " + e.getMessage());
+		}
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 50);
+
+			// Click on the annotation icon
+			WebElement ww = wait.until(ExpectedConditions
+					.visibilityOfElementLocated(By.xpath("//button[text()='Unlock']")));
+			ww.click();
+
+			System.out.println("--------------------------*****************-----------------------");
+			System.out.println("The Unlock button is selected");
+
+		} catch (Exception e) {
+			System.out.println("The Unlock button is not selected");
 		}
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 50);
@@ -254,18 +263,51 @@ public class AutoRegistration {
 		System.out.println("The CheckBox is not Clicked");
 	}
 	try {
-		WebDriverWait wait = new WebDriverWait(driver, 50);
+	    WebDriverWait wait = new WebDriverWait(driver, 50);
 
-		// Click on the annotation icon
-		WebElement copyButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Copy GeoJson']")));
-		Thread.sleep(3000);
-		copyButton.click();
-		Thread.sleep(3000);
-		System.out.println("--------------------------*****************-----------------------");
-		System.out.println("The CopyButton is Clicked");
+	    // Click on the annotation icon
+	    WebElement copyButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Copy GeoJson']")));
+	    Thread.sleep(3000);
+	    copyButton.click();
+	    Thread.sleep(3000);
+	    System.out.println("--------------------------*****************-----------------------");
+	    System.out.println("The CopyButton is Clicked");
 
+	    // Make API call
+	    String apiUrl = "https://apollo2.humanbrain.in/imaging_service/i2iregdev"; // API URL
+	    URL url = new URL(apiUrl);
+	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	    connection.setRequestMethod("GET");  // or POST based on the API method
+	    
+	    // Set headers if necessary
+	    connection.setRequestProperty("Content-Type", "application/json");
+	    
+	    int responseCode = connection.getResponseCode();
+	    if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+	        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	        String inputLine;
+	        StringBuffer response = new StringBuffer();
+	        while ((inputLine = in.readLine()) != null) {
+	            response.append(inputLine);
+	        }
+	        in.close();
+	        System.out.println("API Response: " + response.toString());
+	    } else if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) { // 403
+	        System.out.println("API Request failed with 403 Forbidden. Test case will fail.");
+	        throw new Exception("API Request failed with 403 Forbidden.");
+	    } else {
+	        System.out.println("API Request failed. Response Code: " + responseCode);
+	        throw new Exception("API Request failed with code: " + responseCode);
+	    }
+	} catch (TimeoutException e) {
+	    System.out.println("Timeout occurred: The CopyButton was not found.");
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    System.out.println("API Request failed: " + e.getMessage());
+	    e.printStackTrace();
 	} catch (Exception e) {
-		System.out.println("The CopyButton is not Clicked");
+	    System.out.println("Test case failed: " + e.getMessage());
+	    e.printStackTrace();
 	}
 	try {
 		WebDriverWait wait = new WebDriverWait(driver, 50);
@@ -282,10 +324,8 @@ public class AutoRegistration {
 	} catch (Exception e) {
 		System.out.println("The annotation icon is not clicked");
 	}
-
 	try {
 		Actions actions = new Actions(driver);
-
 		Thread.sleep(3000);
 		actions.keyDown(Keys.ALT).sendKeys("v").keyUp(Keys.ALT).build().perform();
 		Thread.sleep(3000);
@@ -308,7 +348,6 @@ public class AutoRegistration {
 	} catch (Exception e) {
 		System.out.println("The search icon is not clicked");
 	}
-
 	try {
 		WebDriverWait wait = new WebDriverWait(driver, 50);
 
@@ -362,9 +401,7 @@ public class AutoRegistration {
 			// Re-throw the Exception
 			throw e;
 		}
-	
-}
-
+	}
 	@AfterTest
 	public void tearDown() {
 		if (driver != null) {
