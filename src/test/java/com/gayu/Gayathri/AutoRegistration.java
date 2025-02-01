@@ -31,7 +31,7 @@ public class AutoRegistration {
 	@BeforeTest
 	public void setup() throws MalformedURLException {
 		DesiredCapabilities dc = DesiredCapabilities.chrome();
-		URL url = new URL("http://172.20.23.92:4444/wd/hub");
+		URL url = new URL("http://172.20.23.92:4443/wd/hub");
 		driver = new RemoteWebDriver(url, dc);
 	}
 
@@ -159,18 +159,16 @@ public class AutoRegistration {
 		System.out.println("The software Team contributor is  not selected");
 	}
 	
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, 50);
-			Actions actions = new Actions(driver);
-			actions.keyDown(Keys.SHIFT).sendKeys("o").keyUp(Keys.SHIFT).build().perform();
-			System.out.println("--------------------------*****************-----------------------");
-			System.out.println("Action executed successfully!");
-
-		} catch (NoSuchElementException e) {
-			System.out.println("Element not found: " + e.getMessage());
-		} catch (Exception e) {
-			System.out.println("Error executing action: " + e.getMessage());
-		}
+	try {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		WebElement draw = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/viewer/assets/images/colorsvg/paintbrush.svg']")));
+		draw.click();
+		System.out.println("--------------------------*****************-----------------------");
+		System.out.println("The draw menu button is clicked");
+	} catch (Exception e) {
+		System.out.println("--------------------------*****************-----------------------");
+		System.out.println("The draw menu button is not clicked");
+	}  
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 50);
 
