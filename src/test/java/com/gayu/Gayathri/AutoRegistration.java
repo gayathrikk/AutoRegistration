@@ -149,7 +149,7 @@ public class AutoRegistration {
 		}
 	try {
 		WebDriverWait wait6 = new WebDriverWait(driver, 30);
-		WebElement radio = wait6.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@type='radio'])[2]")));
+		WebElement radio = wait6.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@type='radio'])[3]")));
 		radio.click();
 		Thread.sleep(3000);
 		System.out.println("--------------------------*****************-----------------------");
